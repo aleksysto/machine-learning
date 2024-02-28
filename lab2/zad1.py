@@ -45,20 +45,20 @@ class IrisData():
                 self.df['variety'][index] = 'virginica'
             else: 
                 self.cleaned_df.drop(index=index, inplace=True)
-    def clean_final_data(sefl: object) -> None:
+    def clean_final_data(self: object) -> None:
         for index in self.df.index: 
             name = self.df['variety'][index]
             if not (0 <= self.df['sepal.length'][index] <= 15):
-                self.cleaned_df.drop(index=index, inplace=True)
+                self.df['sepal.length'][index] = self.countCleanedMedian('sepal.length')
 
             if not (0 <= self.df['petal.length'][index] <= 15):
-                self.cleaned_df.drop(index=index, inplace=True)
+                self.df['petal.length'][index] = self.countCleanedMedian('petal.length')
 
             if not (0 <= self.df['sepal.width'][index] <= 15):
-                self.cleaned_df.drop(index=index, inplace=True)
+                self.df['sepal.width'][index] = self.countCleanedMedian('sepal.width')
 
             if not (0 <= self.df['petal.width'][index] <= 15):
-                self.cleaned_df.drop(index=index, inplace=True)
+                self.df['petal.width'][index] = self.countCleanedMedian('petal.width')
 
             virginica_match = self.virginica_regex.search(name) 
             setosa_match = self.setosa_regex.search(name) 
@@ -82,6 +82,6 @@ class IrisData():
 def main()-> None: 
     iris = IrisData()
     iris.clean_false_data()
-    med = iris.countCleanedMedian('petal.length')
-    print(med)
+    iris.clean_final_data()
+    iris.df.to_csv("iris_cleaned.csv", index=False)
 main()
